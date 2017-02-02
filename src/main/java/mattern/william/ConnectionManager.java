@@ -53,22 +53,23 @@ public class ConnectionManager implements mattern.william.Connection{
     }
 
     void buildConnection(String ip, String protocol){
-        connectionArrayList.add(this.new ManagedConnection(ip,protocol));
+        ManagedConnection m = new ManagedConnection(ip,protocol);
+        connectionArrayList.add(m);
     }
 
     void buildConnection(String ip, int port){
-        connectionArrayList.add(this.new ManagedConnection(ip,port));
+        connectionArrayList.add(new ManagedConnection(ip,port));
     }
 
     void buildConnection(String ip, String protocol, int port){
-        connectionArrayList.add(this.new ManagedConnection(ip,protocol,port));
+        connectionArrayList.add(new ManagedConnection(ip,protocol,port));
     }
 
     ManagedConnection getConnectionByIp(int ip){
         return this.connectionArrayList.get(ip);
     }
 
-    boolean checkMax(){
+    boolean checkConnectionsOverLimit() {
         return false;
     }
 

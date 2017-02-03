@@ -7,32 +7,36 @@ import java.util.ArrayList;
  */
 public class ConnectionManager {
 
-    ArrayList<ManagedConnection> connectionArrayList;
+    ArrayList<ManagedConnection> connectionArrayList = new ArrayList<ManagedConnection>();
     int MAX_CONNECTIONS = 3;
+    int currentNumberOfConnections = 0;
 
-    private class ManagedConnection implements mattern.william.Connection{
+    class ManagedConnection implements mattern.william.Connection{
         String ip;
         String protocol = "HTTP";
         int port = 8000;
 
-        ManagedConnection(String ip, String protocol, int port){
+        private ManagedConnection(String ip, String protocol, int port){
             this.ip = ip;
             this.protocol = protocol;
             this.port = port;
         }
 
-        ManagedConnection(String ip, String protocol){
+        private ManagedConnection(String ip, String protocol){
             this.ip = ip;
             this.protocol = protocol;
         }
 
-        ManagedConnection(String ip, int port){
+        private ManagedConnection(String ip, int port){
             this.ip = ip;
             this.port = port;
         }
 
         public String connect() {
-            return null;
+            StringBuilder connectOutputSB = new StringBuilder();
+            connectOutputSB.append("Connected to ").append(this.getIP()).append(":").append(this.getPort()).append(" via ").append(this.getProtocol());
+            String connectOutput = connectOutputSB.toString();
+            return connectOutput;
         }
 
         public String getIP() {
@@ -52,21 +56,41 @@ public class ConnectionManager {
         }
     }
 
-    void buildConnection(String ip, String protocol){
-        ManagedConnection m = new ManagedConnection(ip,protocol);
-        connectionArrayList.add(m);
+    ManagedConnection buildConnection(String ip, String protocol){
+        if(currentNumberOfConnections < MAX_CONNECTIONS) {
+            ManagedConnection managedConnection = new ManagedConnection(ip, protocol);
+            connectionArrayList.add(managedConnection);
+            currentNumberOfConnections++;
+            return managedConnection;
+        }
+        System.out.println("MAX_CONNECTIONS already reached, unable to manage another connection");
+        return null;
     }
 
-    void buildConnection(String ip, int port){
-        connectionArrayList.add(new ManagedConnection(ip,port));
+    ManagedConnection buildConnection(String ip, int port){
+        if(currentNumberOfConnections < MAX_CONNECTIONS) {
+            ManagedConnection managedConnection = new ManagedConnection(ip,port);
+            connectionArrayList.add(managedConnection);
+            currentNumberOfConnections++;
+            return managedConnection;
+        }
+        System.out.println("MAX_CONNECTIONS already reached, unable to manage another connection");
+        return null;
     }
 
-    void buildConnection(String ip, String protocol, int port){
-        connectionArrayList.add(new ManagedConnection(ip,protocol,port));
+    ManagedConnection buildConnection(String ip, String protocol, int port){
+        if(currentNumberOfConnections < MAX_CONNECTIONS) {
+            ManagedConnection managedConnection = new ManagedConnection(ip,port);
+            connectionArrayList.add(managedConnection);
+            currentNumberOfConnections++;
+            return managedConnection;
+        }
+        System.out.println("MAX_CONNECTIONS already reached, unable to manage another connection");
+        return null;
     }
 
-    ManagedConnection getConnectionByIp(int ip){
-        return this.connectionArrayList.get(ip);
+    ManagedConnection getConnectionByIp(String ip){
+        return null;
     }
 
     boolean checkConnectionsOverLimit() {

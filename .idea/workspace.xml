@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="61d487fb-9c67-4279-911e-4f50f0edbda6" name="Default" comment="" />
+    <list default="true" id="61d487fb-9c67-4279-911e-4f50f0edbda6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/reynoldstitko/gillian/ConnectionManagerTest.java" afterPath="$PROJECT_DIR$/src/test/java/reynoldstitko/gillian/ConnectionManagerTest.java" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,8 +42,8 @@
       <file leaf-file-name="ConnectionManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/reynoldstitko/gillian/ConnectionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="49" />
+            <state relative-caret-position="255">
+              <caret line="17" column="38" lean-forward="true" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
               <folding>
                 <element signature="e#335#347#0" expanded="true" />
                 <element signature="e#432#433#0" expanded="true" />
@@ -64,12 +66,12 @@
       <file leaf-file-name="ConnectionManagerTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/reynoldstitko/gillian/ConnectionManagerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+            <state relative-caret-position="225">
+              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#251#252#0" expanded="true" />
-                <element signature="e#310#311#0" expanded="true" />
+                <element signature="e#386#387#0" expanded="true" />
+                <element signature="e#445#446#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -620,12 +622,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1486076342347</updated>
-      <workItem from="1486076345563" duration="6308000" />
+      <workItem from="1486076345563" duration="7439000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6308000" />
+    <option name="totallyTimeSpent" value="7439000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="30" y="28" width="1920" height="977" extended-state="0" />
@@ -690,8 +692,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/reynoldstitko/gillian/ConnectionManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="49" />
+        <state relative-caret-position="255">
+          <caret line="17" column="38" lean-forward="true" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
           <folding>
             <element signature="e#335#347#0" expanded="true" />
             <element signature="e#432#433#0" expanded="true" />
@@ -712,12 +714,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/reynoldstitko/gillian/ConnectionManagerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+        <state relative-caret-position="225">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#251#252#0" expanded="true" />
-            <element signature="e#310#311#0" expanded="true" />
+            <element signature="e#386#387#0" expanded="true" />
+            <element signature="e#445#446#0" expanded="true" />
           </folding>
         </state>
       </provider>

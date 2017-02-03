@@ -1,11 +1,13 @@
+import java.io.Closeable;
+
 /**
  * Created by randallcrame on 2/2/17.
  */
-public interface Connection {
+public interface Connection extends Closeable{
     String connect();
-    String getIp();
+    String getIP();
     int getPort();
     String getProtocol();
-    void close();
+    boolean isClosed();
 
 }

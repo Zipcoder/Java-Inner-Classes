@@ -1,20 +1,26 @@
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by randallcrame on 2/2/17.
  */
 public class ConnectionManager {
-    private ArrayList<ManagedConnection> connectList = new ArrayList<ManagedConnection>();
-    ManagedConnection testConnection = new ManagedConnection("1231.21.2.4",123, "HTTP");
+    public ArrayList<Connection> getConnectList() {
+        return connectList;
+    }
+
+    private ArrayList<Connection> connectList = new ArrayList<Connection>();
     private final int MAX_CONNECTION;
     int currentOpenConnections;
     ConnectionManager(int maxNum){
         MAX_CONNECTION = maxNum;
     }
 
-    public ManagedConnection buildConnection(String IP, String protocol){
+    public Connection buildConnection(String IP, String protocol){
         if (!checkMax()){
-            ManagedConnection connection = new ManagedConnection(IP, 8000, protocol);
+            Connection connection = new ManagedConnection(IP, 8000, protocol);
             connectList.add(connection);
             currentOpenConnections++;
             return connection;
@@ -22,11 +28,11 @@ public class ConnectionManager {
             return null;
     }
 
-    public ManagedConnection buildConnection(String IP, int port, String protocol){
+    public Connection buildConnection (String IP, int port, String protocol){
         if (!checkMax()){
             if (port <0 || port > 65535)
                 port = 0000;
-            ManagedConnection connection = new ManagedConnection(IP, port, protocol);
+            Connection connection = new ManagedConnection(IP, port, protocol);
             connectList.add(connection);
             currentOpenConnections++;
             return connection;
@@ -34,11 +40,11 @@ public class ConnectionManager {
             return null;
     }
 
-    public ManagedConnection buildConnection(String IP, int port){
+    public Connection buildConnection(String IP, int port){
         if (!checkMax()){
             if (port <0 || port > 65535)
                 port = 0000;
-            ManagedConnection connection = new ManagedConnection(IP, port, "HTTP");
+            Connection connection = new ManagedConnection(IP, port, "HTTP");
             connectList.add(connection);
             currentOpenConnections++;
             return connection;
@@ -50,11 +56,8 @@ public class ConnectionManager {
         return (currentOpenConnections == MAX_CONNECTION);
     }
 
-    /*public String getInnerIP(ArrayList<ManagedConnection> connectionList, int number){
 
-        return connectionList.get(number).getIP();
-    }/**/
-    public class ManagedConnection{
+    private class ManagedConnection implements Connection{
         String IP;
         int port;
         String protocol;
@@ -67,11 +70,11 @@ public class ConnectionManager {
             closed = false;
         }
 
-        protected String connect(){
+        public String connect(){
 
             return (!isClosed())? "Connected to " + getIP()+":"+getPort() + " via " + getProtocol(): "Error message";
         }
-        protected void close(){
+        public  void close() {
             this.closed = true;
             currentOpenConnections--;
         }

@@ -2,38 +2,46 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * Created by randallcrame on 2/2/17.
  */
 public class ConnectionManagerTest {
     ConnectionManager manager;
-    ConnectionManager.ManagedConnection managedConnection;
+    Connection connection;
     @Before
     public void setUp(){
         manager = new ConnectionManager(3);
-        managedConnection = manager.new ManagedConnection("127.0.0.1", 8000, "HTTP");
+        connection = manager.buildConnection("127.0.0.1", 8000, "HTTP");
     }
 
     @Test
     public void connectTest() {
         String expected = "Connected to 127.0.0.1:8000 via HTTP";
-        String actual = managedConnection.connect();
+        String actual = connection.connect();
         Assert.assertEquals("Expected return of String 'Connected to 127.0.0.1:8000 via HTTP' when called.", expected, actual);
     }
 
     @Test
     public void connectErrorTest() {
-        managedConnection.close();
+        try{
+            connection.close();
+        }
+        catch (IOException e){}
         String expected = "Error message";
-        String actual = managedConnection.connect();
+        String actual = connection.connect();
         Assert.assertEquals("Expected return of String 'Error message' when called.", expected, actual);
     }
 
     @Test
     public void closeIsClosedTest(){
-        managedConnection.close();
+        try{
+            connection.close();
+        }
+        catch (IOException e){}
         boolean expected = true;
-        boolean actual = managedConnection.isClosed();
+        boolean actual = connection.isClosed();
         Assert.assertEquals("Expected to return true because .close() was called", expected, actual);
 
     }
@@ -41,7 +49,7 @@ public class ConnectionManagerTest {
     @Test
     public void closeIsOpenTest(){
         boolean expected = false;
-        boolean actual = managedConnection.isClosed();
+        boolean actual = connection.isClosed();
         Assert.assertEquals("Expected to return false because closed is false", expected, actual);
     }/**/
 
@@ -83,6 +91,7 @@ public class ConnectionManagerTest {
     public void buildConnectionStringIntCallPortTest(){
         int expected = 8000;
         int actual = manager.buildConnection("127.1.1.1", 8000).getPort();
+
         Assert.assertEquals("expect to return 8000", expected, actual);
     }
 

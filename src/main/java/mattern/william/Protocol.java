@@ -6,5 +6,6 @@ package mattern.william;
 public enum Protocol {
     HTTP,
     FTP,
-    SSH
+    SSH,
+    ERROR
 }

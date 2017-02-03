@@ -1,5 +1,6 @@
 package mattern.william;
 
+import java.io.Closeable;
 import java.util.ArrayList;
 
 /**
@@ -7,12 +8,12 @@ import java.util.ArrayList;
  */
 public class ConnectionManager {
 
-    ArrayList<Connection> connectionArrayList = new ArrayList<Connection>();
+    final ArrayList<Connection> connectionArrayList = new ArrayList<Connection>();
     int MAX_CONNECTIONS = 3;
     int currentNumberOfConnections = 0;
 
 
-    class ManagedConnection implements mattern.william.Connection{
+    class ManagedConnection implements mattern.william.Connection,Closeable{
         String ip;
         Protocol protocol = Protocol.HTTP;
         int port = 8000;
@@ -36,26 +37,42 @@ public class ConnectionManager {
         }
 
         public String connect() {
-            StringBuilder connectOutputSB = new StringBuilder();
-            connectOutputSB.append("Connected to ").append(this.getIP()).append(":").append(this.getPort()).append(" via ").append(this.getProtocol());
-            String connectOutput = connectOutputSB.toString();
-            return connectOutput;
+            if(openClosedStatus == Status.OPEN) {
+                StringBuilder connectOutputSB = new StringBuilder();
+                connectOutputSB.append("Connected to ").append(this.getIP()).append(":").append(this.getPort()).append(" via ").append(this.getProtocol());
+                String connectOutput = connectOutputSB.toString();
+                return connectOutput;
+            }
+            return "ERROR this connection is closed";
         }
 
         public String getIP() {
-            return this.ip;
+            if(openClosedStatus == Status.OPEN){
+                return this.ip;
+            }
+            return "ERROR this connection is closed";
+
         }
 
         public Protocol getProtocol() {
-            return this.protocol;
+            if(openClosedStatus == Status.OPEN){
+                return this.protocol;
+            }
+            return Protocol.ERROR;
+
         }
 
         public int getPort() {
-            return this.port;
+            if(openClosedStatus == Status.OPEN){
+                return this.port;
+            }
+            return -1;
+
         }
 
-        void close(){
+        public void close(){
             this.openClosedStatus = Status.CLOSED;
+            connectionArrayList.remove(this);
         }
     }
 

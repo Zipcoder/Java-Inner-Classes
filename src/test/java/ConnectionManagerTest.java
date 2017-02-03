@@ -35,6 +35,27 @@ public class ConnectionManagerTest {
     }
 
     @Test
+    public void connectIPErrorTest() {
+        try{
+            connection.close();
+        }
+        catch (IOException e){}
+        String expected = "Err8347";
+        String actual = connection.getIP();
+        Assert.assertEquals("Expected return of String 'Err8347' when called.", expected, actual);
+    }
+
+    @Test
+    public void connectPortErrorTest() {
+        try{
+            connection.close();
+        }
+        catch (IOException e){}
+        int expected = 0;
+        int actual = connection.getPort();
+        Assert.assertEquals("Expected return of 0 when called.", expected, actual);
+    }
+    @Test
     public void closeIsClosedTest(){
         try{
             connection.close();
@@ -116,14 +137,32 @@ public class ConnectionManagerTest {
     }
 
     @Test
-    public void checkMaxfullTest(){
+    public void checkMaxFullTest(){
+        manager.buildConnection("IP",234);
+        manager.buildConnection("IP2", 324234);
         boolean actual = manager.checkMax();
-        Assert.assertFalse("expected true to return due to  reaching max check", actual);
+        Assert.assertTrue("expected true to return due to  reaching max check", actual);
     }
 
     @Test
     public void checkMax1ClosedTest(){
+        manager.buildConnection("IP",234);
+        try{
+            connection.close();
+        }
+        catch (IOException e){}
+        manager.buildConnection("IP2", 324234);
+
         boolean actual = manager.checkMax();
         Assert.assertFalse("expected false to return due to having one closed", actual);
     }
+
+    @Test
+    public void buildConnectionReturnNullTest(){
+        manager.buildConnection("IP",234);
+        manager.buildConnection("IP2", 324234);
+        Assert.assertNull(manager.buildConnection("IP3", 34234));
+    }
+
+
 }

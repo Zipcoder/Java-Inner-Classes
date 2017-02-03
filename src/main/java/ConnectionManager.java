@@ -7,13 +7,11 @@ import java.util.ArrayList;
  * Created by randallcrame on 2/2/17.
  */
 public class ConnectionManager {
-    public ArrayList<Connection> getConnectList() {
-        return connectList;
-    }
 
-    private ArrayList<Connection> connectList = new ArrayList<Connection>();
+    private ArrayList<Connection> connectList = new ArrayList<>();
     private final int MAX_CONNECTION;
-    int currentOpenConnections;
+    private int currentOpenConnections;
+
     ConnectionManager(int maxNum){
         MAX_CONNECTION = maxNum;
     }
@@ -64,6 +62,11 @@ public class ConnectionManager {
         boolean closed;
 
         ManagedConnection(String IP, int port, String protocol){
+            switch (protocol.toLowerCase()){
+                case "ssh" :
+                case "tcp/ip": this.protocol = protocol; break;
+                default: this.protocol = "HTTP";
+            }
             this.IP = IP;
             this.port = port;
             this.protocol = protocol;
@@ -88,7 +91,7 @@ public class ConnectionManager {
         }
 
         public String getProtocol(){
-            return (isClosed())? "Err8323" : this.protocol;
+            return this.protocol;
         }
 
         public boolean isClosed() {

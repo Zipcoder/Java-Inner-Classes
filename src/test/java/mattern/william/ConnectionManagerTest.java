@@ -101,6 +101,24 @@ public class ConnectionManagerTest {
         assertEquals(expected,actual);
     }
 
+    @Test
+    public void connectionManagerListConnectTestCustomPort(){
+        String actual =connectionManager.buildConnection("192.168.1.1", Protocol.HTTP, 8001).connect();
+        String expected = "Connected to 192.168.1.1:8001 via HTTP";
+        assertEquals(expected,actual);
+    }
 
+    @Test
+    public void connectionManagerListConnectTestCustomIP(){
+        String actual =connectionManager.buildConnection("192.168.4.4", Protocol.HTTP, 8000).connect();
+        String expected = "Connected to 192.168.4.4:8000 via HTTP";
+        assertEquals(expected,actual);
+    }
 
+    @Test
+    public void connectionManagerListConnectTestCustomProtocol(){
+        String actual =connectionManager.buildConnection("192.168.5.1", Protocol.FTP, 8001).connect();
+        String expected = "Connected to 192.168.5.1:8001 via FTP";
+        assertEquals(expected,actual);
+    }
 }

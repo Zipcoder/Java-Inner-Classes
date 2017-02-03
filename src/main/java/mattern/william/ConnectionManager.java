@@ -16,6 +16,7 @@ public class ConnectionManager {
         String ip;
         Protocol protocol = Protocol.HTTP;
         int port = 8000;
+        Status openClosedStatus = Status.OPEN;
 
 
         private ManagedConnection(String ip, Protocol protocol, int port){
@@ -54,7 +55,7 @@ public class ConnectionManager {
         }
 
         void close(){
-
+            this.openClosedStatus = Status.CLOSED;
         }
     }
 
@@ -82,7 +83,7 @@ public class ConnectionManager {
 
     ManagedConnection buildConnection(String ip, Protocol protocol, int port){
         if(currentNumberOfConnections < MAX_CONNECTIONS) {
-            ManagedConnection managedConnection = new ManagedConnection(ip,port);
+            ManagedConnection managedConnection = new ManagedConnection(ip,protocol, port);
             connectionArrayList.add(managedConnection);
             currentNumberOfConnections++;
             return managedConnection;
@@ -91,7 +92,7 @@ public class ConnectionManager {
         return null;
     }
 
-    ManagedConnection getConnectionByIp(String ip){
+    Connection getConnectionByIp(String ip){
         return null;
     }
 
@@ -100,21 +101,5 @@ public class ConnectionManager {
     }
 
     void removeClosedConnection(ManagedConnection managedConnection){
-    }
-
-    public String connect() {
-        return null;
-    }
-
-    public String getIP() {
-        return null;
-    }
-
-    public String getProtocol() {
-        return null;
-    }
-
-    public int getPort() {
-        return 0;
     }
 }

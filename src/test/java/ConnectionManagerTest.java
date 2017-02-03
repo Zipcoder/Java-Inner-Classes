@@ -7,12 +7,14 @@ import org.junit.Test;
  */
 public class ConnectionManagerTest {
     ConnectionManager manager;
+    ConnectionManager.ManagedConnection managedConnection;
     @Before
     public void setUp(){
         manager = new ConnectionManager(3);
+        managedConnection = manager.new ManagedConnection("127.0.0.1", 8000, "HTTP");
     }
 
-    /*@Test
+    @Test
     public void connectTest() {
         String expected = "Connected to 127.0.0.1:8000 via HTTP";
         String actual = managedConnection.connect();
@@ -21,9 +23,10 @@ public class ConnectionManagerTest {
 
     @Test
     public void connectErrorTest() {
+        managedConnection.close();
         String expected = "Error message";
         String actual = managedConnection.connect();
-        Assert.assertEquals("Expected return of String 'Connected to 127.0.0.1:8000 via HTTP' when called.", expected, actual);
+        Assert.assertEquals("Expected return of String 'Error message' when called.", expected, actual);
     }
 
     @Test
@@ -80,6 +83,13 @@ public class ConnectionManagerTest {
     public void buildConnectionStringIntCallPortTest(){
         int expected = 8000;
         int actual = manager.buildConnection("127.1.1.1", 8000).getPort();
+        Assert.assertEquals("expect to return 8000", expected, actual);
+    }
+
+    @Test
+    public void buildConnectionStringIntNegativePortCallPortTest(){
+        int expected = 0000;
+        int actual = manager.buildConnection("127.1.1.1", -32452).getPort();
         Assert.assertEquals("expect to return 8000", expected, actual);
     }
 

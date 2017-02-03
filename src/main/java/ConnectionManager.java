@@ -5,6 +5,7 @@ import java.util.ArrayList;
  */
 public class ConnectionManager {
     private ArrayList<ManagedConnection> connectList = new ArrayList<ManagedConnection>();
+    ManagedConnection testConnection = new ManagedConnection("1231.21.2.4",123, "HTTP");
     private final int MAX_CONNECTION;
     int currentOpenConnections;
     ConnectionManager(int maxNum){
@@ -23,6 +24,8 @@ public class ConnectionManager {
 
     public ManagedConnection buildConnection(String IP, int port, String protocol){
         if (!checkMax()){
+            if (port <0 || port > 65535)
+                port = 0000;
             ManagedConnection connection = new ManagedConnection(IP, port, protocol);
             connectList.add(connection);
             currentOpenConnections++;
@@ -33,6 +36,8 @@ public class ConnectionManager {
 
     public ManagedConnection buildConnection(String IP, int port){
         if (!checkMax()){
+            if (port <0 || port > 65535)
+                port = 0000;
             ManagedConnection connection = new ManagedConnection(IP, port, "HTTP");
             connectList.add(connection);
             currentOpenConnections++;
@@ -44,7 +49,12 @@ public class ConnectionManager {
     public boolean checkMax(){
         return (currentOpenConnections == MAX_CONNECTION);
     }
-    private class ManagedConnection{
+
+    /*public String getInnerIP(ArrayList<ManagedConnection> connectionList, int number){
+
+        return connectionList.get(number).getIP();
+    }/**/
+    public class ManagedConnection{
         String IP;
         int port;
         String protocol;
@@ -58,22 +68,23 @@ public class ConnectionManager {
         }
 
         protected String connect(){
-            return "Connected to " + getIP() + " via " + getProtocol();
+
+            return (!isClosed())? "Connected to " + getIP()+":"+getPort() + " via " + getProtocol(): "Error message";
         }
         protected void close(){
             this.closed = true;
             currentOpenConnections--;
         }
 
-        protected String getIP(){
+        public String getIP(){
             return (isClosed())? "Err8347" : this.IP;
         }
 
-        protected int getPort(){
+        public int getPort(){
             return (isClosed())? 0000 : this.port;
         }
 
-        protected String getProtocol(){
+        public String getProtocol(){
             return (isClosed())? "Err8323" : this.protocol;
         }
 

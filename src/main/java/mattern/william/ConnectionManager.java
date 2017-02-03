@@ -5,15 +5,15 @@ import java.util.ArrayList;
 /**
  * Created by williammattern on 2/2/17.
  */
-public class ConnectionManager implements mattern.william.Connection{
+public class ConnectionManager {
 
     ArrayList<ManagedConnection> connectionArrayList;
     int MAX_CONNECTIONS = 3;
 
-    class ManagedConnection{
+    private class ManagedConnection implements mattern.william.Connection{
         String ip;
         String protocol = "HTTP";
-        int port = 80;
+        int port = 8000;
 
         ManagedConnection(String ip, String protocol, int port){
             this.ip = ip;

@@ -1,5 +1,6 @@
 package reynoldstitko.gillian;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -8,8 +9,8 @@ import java.util.ArrayList;
 public class ConnectionManager {
 
 private int numberOfConnections = 0;
-private int numberOfConnectionsInitialized = 0;
-private int MAX_NUMBER_OF_CONNECTIONS;
+private static int numberOfOpenConnections = 0;
+private final int MAX_NUMBER_OF_CONNECTIONS;
 
     public ArrayList<Connection> connections = new ArrayList<Connection>();
 
@@ -18,59 +19,78 @@ private int MAX_NUMBER_OF_CONNECTIONS;
         MAX_NUMBER_OF_CONNECTIONS = 5;
     }
 
-    //--Testable methods
-    public Connection getConnectionWithIPProtocol(){
+    //Create a method so that we can reach into the private inner class
+    public ManagedConnection createNewManagedConnection(String ip, String port){
+        if(numberOfOpenConnections < MAX_NUMBER_OF_CONNECTIONS){
+            ManagedConnection managedConnection = new ManagedConnection(ip, port);
+            connections.add(managedConnection); //Add a new managed connection to the array
+            numberOfConnections += 1;
+            return managedConnection;
+        } else
         return null;
     }
 
-    public Connection getConnectionWithIPPort(){
-        //set protocol = "HTTP" as a default here
-        return null;
+    public ManagedConnection createNewManagedConnection(String ip, String port, String protocol){
+        if(numberOfOpenConnections < MAX_NUMBER_OF_CONNECTIONS){
+            ManagedConnection managedConnection = new ManagedConnection(ip, port, protocol);
+            connections.add(managedConnection); //Add a new managed connection to the array
+            numberOfConnections += 1;
+            return managedConnection;
+        } else
+            return null;
     }
 
-    public String maxNumberOfConnectionsReached(){
-        //This method will return null if the connection limit is reached
-        return null;
-    }
-
-
-    //---Create the inner class (can't test these methods since private)
+    //---Create the inner class (won't test these methods since private)
     private class ManagedConnection implements Connection {
         private String protocol;
-        private int port;
+        private String port;
         private String ip;
+        boolean closedState = false;
+        String returnCompiledString = "";
 
         //Create a constructor that will take ip and a port
-        ManagedConnection(String ip, int port){
+        ManagedConnection(String ip, String port) {
             this.ip = ip;
             this.port = port;
+            protocol = "HTTP"; //Default protocol
         }
 
         //Create a constructor that will take an optional protocol
-        ManagedConnection(String ip, int port, String protocol){
+        ManagedConnection(String ip, String port, String protocol) {
             this(ip, port);
             this.protocol = "HTTP";
         }
 
-        public String getIP(){
-            return null;
+        public String getIP() {
+
+            return ip;
         }
 
-        public int getPort(){
-            return 0;
+        public String getPort() {
+
+            return port;
         }
 
-        public String getProtocol(){
-           return null;
+        public String getProtocol() {
+
+            return protocol;
         }
 
-        public void close(){
-
+        //The close() method throws an IOException
+        public void close() {
+            //When we close, decrease the available number of connections
+            closedState = true;
+            numberOfOpenConnections--;
         }
 
-        public String connect(){
-         return null;
+        public String connect() {
+            //While we are open, show the port that is open
+            if (closedState == false) {
+                returnCompiledString = "Connected to " + this.getIP() + ":" + this.getPort() + " via " + this.getProtocol() + ".";
+                return returnCompiledString;
+            } else //Once closed, return an error message
+                return "Error: connection has been closed";
         }
-
     }
 }
+

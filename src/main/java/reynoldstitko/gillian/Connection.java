@@ -9,7 +9,7 @@ public interface Connection extends Closeable{
 
     //Define the interface
     String getIP(); //public modifier is redundant for interface methods
-    int getPort();
+    String getPort();
     String getProtocol();
 
     String connect();

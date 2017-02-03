@@ -7,22 +7,24 @@ import java.util.ArrayList;
  */
 public class ConnectionManager {
 
-    ArrayList<ManagedConnection> connectionArrayList = new ArrayList<ManagedConnection>();
+    ArrayList<Connection> connectionArrayList = new ArrayList<Connection>();
     int MAX_CONNECTIONS = 3;
     int currentNumberOfConnections = 0;
 
+
     class ManagedConnection implements mattern.william.Connection{
         String ip;
-        String protocol = "HTTP";
+        Protocol protocol = Protocol.HTTP;
         int port = 8000;
 
-        private ManagedConnection(String ip, String protocol, int port){
+
+        private ManagedConnection(String ip, Protocol protocol, int port){
             this.ip = ip;
             this.protocol = protocol;
             this.port = port;
         }
 
-        private ManagedConnection(String ip, String protocol){
+        private ManagedConnection(String ip, Protocol protocol){
             this.ip = ip;
             this.protocol = protocol;
         }
@@ -43,7 +45,7 @@ public class ConnectionManager {
             return this.ip;
         }
 
-        public String getProtocol() {
+        public Protocol getProtocol() {
             return this.protocol;
         }
 
@@ -56,7 +58,7 @@ public class ConnectionManager {
         }
     }
 
-    ManagedConnection buildConnection(String ip, String protocol){
+    ManagedConnection buildConnection(String ip, Protocol protocol){
         if(currentNumberOfConnections < MAX_CONNECTIONS) {
             ManagedConnection managedConnection = new ManagedConnection(ip, protocol);
             connectionArrayList.add(managedConnection);
@@ -78,7 +80,7 @@ public class ConnectionManager {
         return null;
     }
 
-    ManagedConnection buildConnection(String ip, String protocol, int port){
+    ManagedConnection buildConnection(String ip, Protocol protocol, int port){
         if(currentNumberOfConnections < MAX_CONNECTIONS) {
             ManagedConnection managedConnection = new ManagedConnection(ip,port);
             connectionArrayList.add(managedConnection);

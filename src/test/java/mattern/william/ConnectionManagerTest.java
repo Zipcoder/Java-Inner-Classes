@@ -14,7 +14,7 @@ public class ConnectionManagerTest {
     @Before
     public void setUp() {
         connectionManager = new ConnectionManager();
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
     }
 
     @Test
@@ -25,35 +25,82 @@ public class ConnectionManagerTest {
 
     @Test
     public void connectionManagerIPReturnTest(){
-        String actual = connectionManager.buildConnection("192.168.1.1", "HTTP").getIP();
+        String actual = connectionManager.buildConnection("192.168.1.1", Protocol.HTTP).getIP();
         String expected = "192.168.1.1";
         assertEquals(expected,actual);
     }
 
     @Test
     public void connectionManagerProtocolReturnTest(){
-        String actual = connectionManager.buildConnection("192.168.1.1", "HTTP").getProtocol();
-        String expected = "HTTP";
+        Protocol actual = connectionManager.buildConnection("192.168.1.1", Protocol.HTTP).getProtocol();
+        Protocol expected = Protocol.HTTP;
         assertEquals(expected,actual);
     }
 
     @Test
     public void connectionManagerPortReturnTest(){
-        int actual = connectionManager.buildConnection("192.168.1.1", "HTTP").getPort();
+        int actual = connectionManager.buildConnection("192.168.1.1", Protocol.HTTP).getPort();
         int expected = 8000;
         assertEquals(expected,actual);
     }
 
     @Test
+    public void connectionManagerNewProtocolTest(){
+        Protocol actual = connectionManager.buildConnection("192.168.1.1", Protocol.FTP).getProtocol();
+        Protocol expected = Protocol.FTP;
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void connectionManagerNewPortReturnTest(){
+        int actual = connectionManager.buildConnection("192.168.1.1", Protocol.HTTP, 8001).getPort();
+        int expected = 8001;
+        assertEquals(expected,actual);
+    }
+
+    @Test
     public void connectionManagerMaxConnectionTest(){
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
-        connectionManager.buildConnection("192.168.1.1", "HTTP");
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
         int expected = 3, actual = connectionManager.connectionArrayList.size();
         assertEquals(expected,actual);
     }
+
+    @Test
+    public void connectionManagerListPortReturnTest(){
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        int actual = connectionManager.connectionArrayList.get(1).getPort();
+        int expected = 8000;
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void connectionManagerListIpReturnTest(){
+        connectionManager.buildConnection("192.168.0.1", Protocol.HTTP);
+        String actual = connectionManager.connectionArrayList.get(1).getIP();
+        String expected = "192.168.0.1";
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void connectionManagerListProtocolReturnTest(){
+        connectionManager.buildConnection("192.168.0.1", Protocol.HTTP);
+        Protocol actual = connectionManager.connectionArrayList.get(1).getProtocol();
+        Protocol expected = Protocol.HTTP;
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void connectionManagerListConnectTest(){
+        String actual = connectionManager.connectionArrayList.get(0).connect();
+        String expected = "Connected to 192.168.1.1:8000 via HTTP";
+        assertEquals(expected,actual);
+    }
+
+
 
 }

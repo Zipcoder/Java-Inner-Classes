@@ -1,7 +1,5 @@
 package mattern.william;
 
-import java.io.Closeable;
-
 /**
  * Created by williammattern on 2/2/17.
  */
@@ -10,7 +8,7 @@ public interface Connection{
 
     String getIP();
 
-    String getProtocol();
+    Protocol getProtocol();
 
     int getPort();
 }

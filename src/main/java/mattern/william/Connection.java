@@ -1,9 +1,11 @@
 package mattern.william;
 
+import java.io.Closeable;
+
 /**
  * Created by williammattern on 2/2/17.
  */
-public interface Connection{
+public interface Connection {
     String connect();
 
     String getIP();

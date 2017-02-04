@@ -8,17 +8,15 @@ import java.util.ArrayList;
  */
 public class ConnectionManager {
 
-    final ArrayList<Connection> connectionArrayList = new ArrayList<Connection>();
+    ArrayList<ManagedConnection> connectionArrayList = new ArrayList<ManagedConnection>();
     int MAX_CONNECTIONS = 3;
     int currentNumberOfConnections = 0;
 
-
-    class ManagedConnection implements mattern.william.Connection,Closeable{
+    class ManagedConnection implements mattern.william.Connection{
         String ip;
         Protocol protocol = Protocol.HTTP;
         int port = 8000;
         Status openClosedStatus = Status.OPEN;
-
 
         private ManagedConnection(String ip, Protocol protocol, int port){
             this.ip = ip;
@@ -51,28 +49,32 @@ public class ConnectionManager {
                 return this.ip;
             }
             return "ERROR this connection is closed";
-
         }
 
         public Protocol getProtocol() {
             if(openClosedStatus == Status.OPEN){
                 return this.protocol;
             }
+            System.out.println("ERROR this connection is closed");
             return Protocol.ERROR;
-
         }
 
         public int getPort() {
             if(openClosedStatus == Status.OPEN){
                 return this.port;
             }
+            System.out.println("ERROR this connection is closed");
             return -1;
+        }
 
+        public Status getStatus() {
+                return this.openClosedStatus;
         }
 
         public void close(){
             this.openClosedStatus = Status.CLOSED;
             connectionArrayList.remove(this);
+            currentNumberOfConnections--;
         }
     }
 
@@ -109,14 +111,21 @@ public class ConnectionManager {
         return null;
     }
 
-    Connection getConnectionByIp(String ip){
+    ManagedConnection getConnectionByIp(String ip){
+        for (ManagedConnection connection: connectionArrayList){
+            if(connection.getIP().equals(ip)){
+                return connection;
+            }
+        }
         return null;
     }
 
-    boolean checkConnectionsOverLimit() {
-        return false;
-    }
-
-    void removeClosedConnection(ManagedConnection managedConnection){
+    Connection getConnectionByProtocol(Protocol protocol){
+        for (Connection connection: connectionArrayList){
+            if(connection.getProtocol().equals(protocol)){
+                return connection;
+            }
+        }
+        return null;
     }
 }

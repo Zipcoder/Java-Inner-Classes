@@ -1,6 +1,4 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -16,15 +14,6 @@ public class ConnectionManager {
         MAX_CONNECTION = maxNum;
     }
 
-    public Connection buildConnection(String IP, String protocol){
-        if (!checkMax()){
-            Connection connection = new ManagedConnection(IP, 8000, protocol);
-            connectList.add(connection);
-            currentOpenConnections++;
-            return connection;
-        } else
-            return null;
-    }
 
     public Connection buildConnection (String IP, int port, String protocol){
         if (!checkMax()){
@@ -38,18 +27,29 @@ public class ConnectionManager {
             return null;
     }
 
-    public Connection buildConnection(String IP, int port){
-        if (!checkMax()){
-            if (port <0 || port > 65535)
-                port = 0000;
-            Connection connection = new ManagedConnection(IP, port, "HTTP");
-            connectList.add(connection);
-            currentOpenConnections++;
-            return connection;
-        } else
-            return null;
+    public Connection getConnection(String IP, int port){
+        for (Connection connection: this.connectList) {
+            if (IP.equals(connection.getIP()) && port == connection.getPort())
+                return connection;
+        }
+        return null;
     }
 
+    public Connection getConnection(String IP, String protocol){
+        for (Connection connection: this.connectList) {
+            if (IP.equals(connection.getIP()) && protocol.equals(connection.getProtocol()))
+                return connection;
+        }
+        return null;
+    }
+
+    public Connection getConnection(String IP, int port, String protocol){
+        for (Connection connection: this.connectList) {
+            if (IP.equals(connection.getIP()) && port == connection.getPort() && protocol.equals(connection.getProtocol()))
+                return connection;
+        }
+        return null;
+    }
     public boolean checkMax(){
         return (currentOpenConnections == MAX_CONNECTION);
     }

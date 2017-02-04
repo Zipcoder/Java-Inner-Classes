@@ -10,16 +10,19 @@ import java.io.IOException;
 public class ConnectionManagerTest {
     ConnectionManager manager;
     Connection connection;
+    String IP = "127.0.0.1";
+    int port = 8000;
+    String protocol = "HTTP";
     @Before
     public void setUp(){
         manager = new ConnectionManager(3);
-        connection = manager.buildConnection("127.0.0.1", 8000, "HTTP");
+        connection = manager.buildConnection(IP, port, protocol);
     }
 
     @Test
     public void connectTest() {
         String expected = "Connected to 127.0.0.1:8000 via HTTP";
-        String actual = connection.connect();
+        String actual = manager.getConnection(IP,port).connect();
         Assert.assertEquals("Expected return of String 'Connected to 127.0.0.1:8000 via HTTP' when called.", expected, actual);
     }
 
@@ -74,19 +77,6 @@ public class ConnectionManagerTest {
         Assert.assertEquals("Expected to return false because closed is false", expected, actual);
     }/**/
 
-    @Test
-    public void buildConnectionStringStringCallIPTest(){
-        String expected = "127.1.1.1";
-        String actual = manager.buildConnection("127.1.1.1", "HTTP").getIP();
-        Assert.assertEquals("expect to return '127.1.1.1 '", expected, actual);
-    }
-
-    @Test
-    public void buildConnectionStringStringCallProtocolTest(){
-        String expected = "HTTP";
-        String actual = manager.buildConnection("127.1.1.1", "HTTP").getProtocol();
-        Assert.assertEquals("expect to return '127.1.1.1 '", expected, actual);
-    }
 
     @Test
     public void buildConnectionStringIntStringCallIPTest(){
@@ -109,28 +99,6 @@ public class ConnectionManagerTest {
     }
 
     @Test
-    public void buildConnectionStringIntCallPortTest(){
-        int expected = 8000;
-        int actual = manager.buildConnection("127.1.1.1", 8000).getPort();
-
-        Assert.assertEquals("expect to return 8000", expected, actual);
-    }
-
-    @Test
-    public void buildConnectionStringIntNegativePortCallPortTest(){
-        int expected = 0000;
-        int actual = manager.buildConnection("127.1.1.1", -32452).getPort();
-        Assert.assertEquals("expect to return 8000", expected, actual);
-    }
-
-    @Test
-    public void buildConnectionStringInCallIPTest(){
-        String expected = "127.1.1.1";
-        String actual = manager.buildConnection("127.1.1.1", 8000).getIP();
-        Assert.assertEquals("expect to return 8000", expected, actual);
-    }
-
-    @Test
     public void checkMaxTest(){
         boolean actual = manager.checkMax();
         Assert.assertFalse("expected false to return due to not reaching max check", actual);
@@ -138,20 +106,20 @@ public class ConnectionManagerTest {
 
     @Test
     public void checkMaxFullTest(){
-        manager.buildConnection("IP",234);
-        manager.buildConnection("IP2", 324234);
+        manager.buildConnection("IP",234,"ijroiqwje");
+        manager.buildConnection("IP2", 324234, "iowe");
         boolean actual = manager.checkMax();
         Assert.assertTrue("expected true to return due to  reaching max check", actual);
     }
 
     @Test
     public void checkMax1ClosedTest(){
-        manager.buildConnection("IP",234);
+        manager.buildConnection("IP",234, "jodf");
         try{
             connection.close();
         }
         catch (IOException e){}
-        manager.buildConnection("IP2", 324234);
+        manager.buildConnection("IP2", 324234, "fjids");
 
         boolean actual = manager.checkMax();
         Assert.assertFalse("expected false to return due to having one closed", actual);
@@ -159,10 +127,33 @@ public class ConnectionManagerTest {
 
     @Test
     public void buildConnectionReturnNullTest(){
-        manager.buildConnection("IP",234);
-        manager.buildConnection("IP2", 324234);
-        Assert.assertNull(manager.buildConnection("IP3", 34234));
+        manager.buildConnection("IP",234, "jdj");
+        manager.buildConnection("IP2", 324234, "dfjid");
+        Assert.assertNull(manager.buildConnection("IP3", 34234, "jdfj"));
     }
 
+    @Test
+    public void getConnectionStringString(){
+        Connection expected = connection;
+        Connection actual = manager.getConnection(IP,protocol);
+        Assert.assertEquals("Expected to pass gathering the correct Connection", expected, actual);
+    }
+
+
+    @Test
+    public void getConnectionStringInt(){
+        Connection expected = connection;
+        Connection actual = manager.getConnection(IP, port);
+        Assert.assertEquals("Expected to pass gathering the correct Connection", expected, actual);
+
+    }
+
+    @Test
+    public void getConnectionStringIntString(){
+        Connection expected = connection;
+        Connection actual = manager.getConnection(IP, port, protocol);
+        Assert.assertEquals("Expected to pass gathering the correct Connection", expected, actual);
+
+    }
 
 }

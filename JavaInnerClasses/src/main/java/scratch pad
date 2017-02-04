@@ -1,0 +1,50 @@
+https://github.com/JohnAntonioCollins/Java-Inner-Classes.git
+
+Part I: Return of the Connection Manager
+
+-Define a Connection interface
+    -with accessors for
+        -IP,
+        -Port, and
+        -Protocol,
+
+        -as well as a connect() method that returns a String.
+            -An example of this String would be "Connected to 127.0.0.1:8000 via HTTP.".
+
+-Create a ConnectionManager class
+    -with a private nested ManagedConnection class
+            -that implements Connection.
+
+-ManagedConnecions are a special type of connection
+    -which is
+        -monitored GETTER and
+        -managed SETTER by ConnectionManager.
+
+-ConnectionManager behaves like a factory for Connections,
+    -and should have methods to
+            -get connection objects
+                    -based on IP and protocol (You must support at least three protocols from this list)
+                    -or custom-configured connections based on IP and port number (the default protocol should be HTTP)
+                        -with optional protocol (the default protocol should be HTTP)
+
+-The ConnectionManager can only handle so many connections (You can set this limit in the constructor).
+-ConnectionManager should keep track of how many connections it has initialized;
+
+-if it has reached its limit
+    -and another request for a connection comes in,
+        -ConnectionManager should return null instead of a Connection object.
+
+Part II: Closing Connections
+
+-Implement the java.io.Closeable interface
+    -and add a close() method to the Connection interface
+    -and to your nested ManagedConnection class.
+
+-A ManagedConnection object should tell its ConnectionManager that it has been closed,
+- so that the ConnectionManager knows that there is one more connection available on the system.
+
+-A Connection should not provide its IP or Port numbers once it has been closed.
+    -Add logic to your implementation so that the accessors for these values return invalid values (i.e.: error codes)
+        -if the connection has been closed.
+
+-The connect() method should also return an error message if it is called after a connection has been closed.

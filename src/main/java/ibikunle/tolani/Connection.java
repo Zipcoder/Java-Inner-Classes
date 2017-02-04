@@ -13,12 +13,11 @@ public interface Connection extends Closeable {
 
     String getIPAddress();
 
-     String getProtocol();
+    String getProtocol();
 
-     String getPort();
+    String getPort();
 
-     String connect();
+    String connect();
 
-
-     void close();
+    void close();
 }

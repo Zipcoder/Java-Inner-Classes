@@ -64,10 +64,6 @@ public class ConnectionTests {
 
     }
 
-    @Test
-    public void close() {
-
-    }
 
     @Test
     public void connectTest() {

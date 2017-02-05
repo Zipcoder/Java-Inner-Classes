@@ -139,7 +139,7 @@ public class ConnectionManagerTest {
     @Test
     public void TestClosing(){
         //connectionManager.buildConnection("192.168.1.1", Protocol.HTTP); already initialized above
-        connectionManager.buildConnection("192.168.5.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.6.1", Protocol.HTTP);
         connectionManager.buildConnection("192.168.2.1", Protocol.HTTP);
         connectionManager.getConnectionByIp("192.168.1.1").close();
         int expected = 2, actual = connectionManager.currentNumberOfConnections;
@@ -147,4 +147,24 @@ public class ConnectionManagerTest {
     }
 
 
+    @Test
+    public void TestClosingAndOpening(){
+        //connectionManager.buildConnection("192.168.1.1", Protocol.HTTP); already initialized above
+        connectionManager.buildConnection("192.168.6.1", Protocol.HTTP);
+        connectionManager.buildConnection("192.168.2.1", Protocol.HTTP);
+        connectionManager.getConnectionByIp("192.168.1.1").close();
+        connectionManager.buildConnection("100.133.100.100",8123);
+        int expected = 3, actual = connectionManager.currentNumberOfConnections;
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void TestReopening(){
+        //connectionManager.buildConnection("192.168.1.1", Protocol.HTTP); already initialized above
+        connectionManager.getConnectionByIp("192.168.1.1").close();
+        connectionManager.buildConnection("192.168.1.1", Protocol.HTTP);
+        String actual = connectionManager.getConnectionByIp("192.168.1.1").connect();
+        String expected = "Connected to 192.168.1.1:8000 via HTTP";
+        assertEquals(expected,actual);
+    }
 }

@@ -138,7 +138,13 @@ public class ConnectionManagerTest {
 
     @Test
     public void TestClosing(){
+        //connectionManager.buildConnection("192.168.1.1", Protocol.HTTP); already initialized above
         connectionManager.buildConnection("192.168.5.1", Protocol.HTTP);
         connectionManager.buildConnection("192.168.2.1", Protocol.HTTP);
+        connectionManager.getConnectionByIp("192.168.1.1").close();
+        int expected = 2, actual = connectionManager.currentNumberOfConnections;
+        assertEquals(expected,actual);
     }
+
+
 }

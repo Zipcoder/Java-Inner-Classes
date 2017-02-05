@@ -2,21 +2,25 @@ package mattern.william;
 
 import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by williammattern on 2/2/17.
  */
 public class ConnectionManager {
-
-    ArrayList<ManagedConnection> connectionArrayList = new ArrayList<ManagedConnection>();
+    List<ManagedConnection> connectionArrayList = new ArrayList<ManagedConnection>();
     int MAX_CONNECTIONS = 3;
     int currentNumberOfConnections = 0;
 
     class ManagedConnection implements mattern.william.Connection{
-        String ip;
-        Protocol protocol = Protocol.HTTP;
-        int port = 8000;
-        Status openClosedStatus = Status.OPEN;
+        Protocol defaultProtocol = Protocol.HTTP;
+        Status defaultOpenClosedStatus = Status.OPEN;
+        int defaultPort = 8000;
+
+        String ip;  //Does not have a default value since every constructor must provide the IP.
+        Protocol protocol = defaultProtocol;
+        int port = defaultPort;
+        Status openClosedStatus = defaultOpenClosedStatus;
 
         private ManagedConnection(String ip, Protocol protocol, int port){
             this.ip = ip;
@@ -73,7 +77,6 @@ public class ConnectionManager {
 
         public void close(){
             this.openClosedStatus = Status.CLOSED;
-            connectionArrayList.remove(this);
             currentNumberOfConnections--;
         }
     }
